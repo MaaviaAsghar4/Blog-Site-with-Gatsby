@@ -1,0 +1,17 @@
+.container {
+  padding: 25px 25px !important;
+}
+
+.mainFont {
+  color: #006e6b !important;
+  font-weight: bold !important;
+}
+
+.btn {
+  background-color: #006e6b !important;
+}
+
+.btn a {
+  text-decoration: none !important;
+  color: #f7f7f7 !important;
+}

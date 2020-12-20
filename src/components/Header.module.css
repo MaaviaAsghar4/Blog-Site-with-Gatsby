@@ -1,0 +1,19 @@
+.mainNav {
+  background: linear-gradient(180deg, #025856, #006e6b) !important;
+}
+
+.displayRight {
+  margin-left: auto;
+}
+
+.marginLeft {
+  margin-left: 10px !important;
+  font-size: 1rem !important;
+  font-weight: bold !important;
+  cursor: pointer;
+}
+
+.marginLeft a {
+  text-decoration: none;
+  color: #f7f7f7;
+}
