@@ -1,7 +1,7 @@
 .title {
   font-size: 2rem !important;
   color: #006e6b !important;
-  margin-top: 20px;
+  margin-top: 30px !important;
 }
 
 .img {
@@ -11,4 +11,8 @@
 
 .body {
   margin-top: 20px !important;
+}
+
+.imgBox {
+  text-align: center !important;
 }

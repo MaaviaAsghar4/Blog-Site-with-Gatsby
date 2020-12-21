@@ -1,24 +1,31 @@
 import { Container, Box, Typography } from "@material-ui/core";
+import { renderRichText } from "gatsby-source-contentful/rich-text";
 import React from "react";
 import Layout from "../components/Layout";
-import GatsbyBanner from "../images/gatsbyBanner.png";
 import styles from "./blogTemplate.module.css";
-export default function blogTemplate() {
+
+export default function blogTemplate({ pageContext }) {
+  console.log(pageContext);
+  const { blogDetails } = pageContext;
+  console.log(blogDetails);
   return (
     <Layout>
       <Container maxWidth="md">
-        <Box>
+        <Box className={styles.imgBox}>
           <Typography className={styles.title} variant="h1" gutterBottom>
-            Title of Blog
+            {blogDetails.title}
           </Typography>
         </Box>
-        <Box>
-          <img className={styles.img} src={GatsbyBanner} alt="Featured Image" />
+        <Box className={styles.imgBox}>
+          <img
+            className={styles.img}
+            src={blogDetails.featuredImage.file.url}
+            alt={blogDetails.featuredImage.description}
+          />
         </Box>
         <Box>
           <Typography className={styles.body} variant="body1" gutterBottom>
-            This is the body of the blog that would display the rich data in the
-            form of json api
+            {renderRichText(blogDetails.blog)}
           </Typography>
         </Box>
       </Container>

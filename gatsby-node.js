@@ -1,12 +1,39 @@
-exports.createPages = async function ({ actions }) {
-  actions.createPage({
-    path: "blogPost",
-    component: require.resolve(`./src/template/blogTemplate.tsx`),
-    context: {
-      // Data passed to context is available
-      // in pageContext props of the template component
-      name: "Zia",
-    },
+const path = require("path");
+
+exports.createPages = async function ({ actions, graphql }) {
+  const { createPage } = actions;
+  const result = await graphql(`
+    {
+      allContentfulGatsby {
+        nodes {
+          slug
+          featuredImage {
+            description
+            file {
+              url
+            }
+            fluid {
+              src
+            }
+          }
+          title
+          blog {
+            raw
+          }
+        }
+      }
+    }
+  `);
+
+  console.log(JSON.stringify(result));
+
+  result.data.allContentfulGatsby.nodes.forEach((blogData) => {
+    createPage({
+      path: `/blog/${blogData.slug}`,
+      component: path.resolve(`./src/template/blogTemplate.tsx`),
+      context: {
+        blogDetails: blogData,
+      },
+    });
   });
-  console.log("End of Gatsby Node File");
 };
