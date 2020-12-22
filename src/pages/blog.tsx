@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import { Link, graphql } from "gatsby";
 import styles from "./blog.module.css";
 import { useSelector } from "react-redux";
+import { useAppDispatch } from "../store";
 import {
   Card,
   CardMedia,
@@ -13,10 +14,21 @@ import {
   CardActions,
   Grid,
 } from "@material-ui/core";
+import { blogShow } from "../features/authSlice";
 
 export default function Blog({ data }) {
+  const dispatch = useAppDispatch();
   const { allContentfulGatsby } = data;
   const auth = useSelector((state: any) => state.auth);
+  const handleBlogVisiblity = () => {
+    let number = 0;
+    if (auth.number === 0) {
+      localStorage.setItem("state", number.toString());
+      dispatch(blogShow(1));
+    } else {
+      localStorage.removeItem("state");
+    }
+  };
   return (
     <Layout>
       <Grid container spacing={3} className={styles.container}>
@@ -44,12 +56,13 @@ export default function Blog({ data }) {
                   </CardContent>
                 </CardActionArea>
                 <CardActions>
-                  <Button className={styles.btn} size="small" color="primary">
-                    <Link
-                      to={auth.isLoggedIn ? `/blog/${blogData.slug}` : `/login`}
-                    >
-                      Read More
-                    </Link>
+                  <Button
+                    onClick={handleBlogVisiblity}
+                    className={styles.btn}
+                    size="small"
+                    color="primary"
+                  >
+                    <Link to={`/blog/${blogData.slug}`}>Read More</Link>
                   </Button>
                 </CardActions>
               </Card>

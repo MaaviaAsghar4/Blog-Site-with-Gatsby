@@ -12,6 +12,7 @@ import {
 import { signUpUser } from "../features/firebase";
 import { isAuthenticated } from "../features/authSlice";
 import styles from "./signup.module.css";
+import { increment } from "../features/stateSlice";
 
 export default function signup() {
   const dispatch = useAppDispatch();
@@ -35,9 +36,11 @@ export default function signup() {
           email: user?.user?.email,
           token: user?.user?.uid,
           isAuth: true,
+          number: 1,
         };
         console.log(payload);
         dispatch(isAuthenticated(payload));
+        dispatch(increment(1));
       }
       setLoading(false);
     } catch (error) {

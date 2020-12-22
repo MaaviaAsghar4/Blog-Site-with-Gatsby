@@ -12,6 +12,7 @@ import {
 import { logInUser } from "../features/firebase";
 import { isAuthenticated } from "../features/authSlice";
 import styles from "./login.module.css";
+import { increment } from "../features/stateSlice";
 
 export default function login() {
   const dispatch = useAppDispatch();
@@ -29,9 +30,11 @@ export default function login() {
         email: user?.user?.email,
         token: user?.user?.uid,
         isAuth: true,
+        number: 1,
       };
       console.log(payload);
       dispatch(isAuthenticated(payload));
+      dispatch(increment(1));
     } catch (error) {
       setError("Failed to Log In");
     }
