@@ -2,6 +2,7 @@ import React from "react";
 import Layout from "../components/Layout";
 import { Link, graphql } from "gatsby";
 import styles from "./blog.module.css";
+import { useSelector } from "react-redux";
 import {
   Card,
   CardMedia,
@@ -15,7 +16,7 @@ import {
 
 export default function Blog({ data }) {
   const { allContentfulGatsby } = data;
-  console.log(allContentfulGatsby.nodes);
+  const auth = useSelector((state: any) => state.auth);
   return (
     <Layout>
       <Grid container spacing={3} className={styles.container}>
@@ -44,7 +45,11 @@ export default function Blog({ data }) {
                 </CardActionArea>
                 <CardActions>
                   <Button className={styles.btn} size="small" color="primary">
-                    <Link to={`/blog/${blogData.slug}`}>Read More</Link>
+                    <Link
+                      to={auth.isLoggedIn ? `/blog/${blogData.slug}` : `/login`}
+                    >
+                      Read More
+                    </Link>
                   </Button>
                 </CardActions>
               </Card>

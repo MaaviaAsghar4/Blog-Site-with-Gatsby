@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "gatsby";
 import { useAppDispatch } from "../store";
+import { useSelector } from "react-redux";
 import {
   Container,
   TextField,
@@ -8,31 +9,51 @@ import {
   Typography,
   Box,
 } from "@material-ui/core";
-import { signUpUser } from "../features/authSlice";
+import { signUpUser } from "../features/firebase";
+import { isAuthenticated } from "../features/authSlice";
 import styles from "./signup.module.css";
 
 export default function signup() {
   const dispatch = useAppDispatch();
+  const auth = useSelector((state: any) => state.auth);
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [confirmation, setConfirmation] = useState("");
   let [error, setError] = useState("");
   let [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (password !== confirmation) {
-      setError("passwords do Not Match");
-    } else {
-      let payload = { email, password };
-      setLoading(true);
-      dispatch(signUpUser(payload));
+    try {
+      if (password !== confirmation) {
+        setError("passwords do Not Match");
+      } else {
+        setLoading(true);
+        const user: any = await signUpUser(email, password);
+        console.log(user);
+        const payload = {
+          email: user?.user?.email,
+          token: user?.user?.uid,
+          isAuth: true,
+        };
+        console.log(payload);
+        dispatch(isAuthenticated(payload));
+      }
+      setLoading(false);
+    } catch (error) {
+      setError("Failed to Create Account");
     }
-    setLoading(false);
   };
   return (
     <div className={styles.container}>
       <Container maxWidth="sm">
+        {auth.isLoggedIn ? (
+          <Typography variant="body1" className={styles.blogs}>
+            Continue to <Link to="/blog">blogs</Link>
+          </Typography>
+        ) : (
+          ""
+        )}
         <form className={styles.formContainer} onSubmit={handleSubmit}>
           <Typography className={styles.title}>SignUp Form</Typography>
           {error && <Typography className={styles.error}>{error}</Typography>}

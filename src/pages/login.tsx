@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "gatsby";
+import { useSelector } from "react-redux";
 import { useAppDispatch } from "../store";
 import {
   Container,
@@ -8,24 +9,46 @@ import {
   Typography,
   Box,
 } from "@material-ui/core";
-import { logInUser } from "../features/authSlice";
+import { logInUser } from "../features/firebase";
+import { isAuthenticated } from "../features/authSlice";
 import styles from "./login.module.css";
 
 export default function login() {
   const dispatch = useAppDispatch();
+  const auth = useSelector((state: any) => state.auth);
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
+  let [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let payload = { email, password };
-    dispatch(logInUser(payload));
+    try {
+      const user = await logInUser(email, password);
+      console.log(user);
+      const payload = {
+        email: user?.user?.email,
+        token: user?.user?.uid,
+        isAuth: true,
+      };
+      console.log(payload);
+      dispatch(isAuthenticated(payload));
+    } catch (error) {
+      setError("Failed to Log In");
+    }
   };
   return (
     <div className={styles.container}>
       <Container maxWidth="sm">
+        {auth.isLoggedIn ? (
+          <Typography variant="body1" className={styles.blogs}>
+            Continue to <Link to="/blog">blogs</Link>
+          </Typography>
+        ) : (
+          ""
+        )}
         <form className={styles.formContainer} onSubmit={handleSubmit}>
-          <Typography className={styles.title}>SignUp Form</Typography>
+          <Typography className={styles.title}>Login Form</Typography>
+          {error && <Typography className={styles.error}>{error}</Typography>}
           <TextField
             type="email"
             id="outlined-basic"
