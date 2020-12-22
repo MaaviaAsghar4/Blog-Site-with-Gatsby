@@ -10,32 +10,9 @@ import styles from "./blogTemplate.module.css";
 export default function blogTemplate({ pageContext }) {
   const { blogDetails } = pageContext;
   const auth = useSelector((state: any) => state.auth);
-  const localData: any = localStorage.getItem("state");
-  const shouldVisible = parseInt(localData);
 
   return (
     <Layout>
-      {/* {auth.num < 1 ? (
-        <Container maxWidth="md">
-          <Box className={styles.imgBox}>
-            <Typography className={styles.title} variant="h1" gutterBottom>
-              {blogDetails.title}
-            </Typography>
-          </Box>
-          <Box className={styles.imgBox}>
-            <img
-              className={styles.img}
-              src={blogDetails.featuredImage.file.url}
-              alt={blogDetails.featuredImage.description}
-            />
-          </Box>
-          <Box>
-            <Typography className={styles.body} variant="body1" gutterBottom>
-              {renderRichText(blogDetails.blog)}
-            </Typography>
-          </Box>
-        </Container>
-      ) : ( */}
       <Container maxWidth="md">
         <Box className={styles.imgBox}>
           <Typography className={styles.title} variant="h1" gutterBottom>
@@ -50,7 +27,7 @@ export default function blogTemplate({ pageContext }) {
           />
         </Box>
         <Box>
-          {shouldVisible === 0 ? (
+          {!auth.isLoggedIn ? (
             <Box>
               <Typography
                 className={styles.truncatedText}

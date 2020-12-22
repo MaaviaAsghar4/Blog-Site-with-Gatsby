@@ -25,13 +25,10 @@ export default function Blog({ data }) {
   const handleBlogVisiblity = () => {
     let number = 0;
     if (blogState.number === 0) {
-      localStorage.setItem("state", number.toString());
       dispatch(blogShow(0));
       dispatch(increment(1));
     } else {
       dispatch(blogShow(1));
-      localStorage.removeItem("state");
-      localStorage.setItem("state", (number + 1).toString());
     }
   };
   return (
