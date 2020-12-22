@@ -12,10 +12,10 @@ export default function blogTemplate({ pageContext }) {
   const auth = useSelector((state: any) => state.auth);
   const localData: any = localStorage.getItem("state");
   const shouldVisible = parseInt(localData);
-  let [showBlog, setShowBlog] = React.useState(0);
+
   return (
     <Layout>
-      {showBlog === 0 ? (
+      {/* {auth.num < 1 ? (
         <Container maxWidth="md">
           <Box className={styles.imgBox}>
             <Typography className={styles.title} variant="h1" gutterBottom>
@@ -35,44 +35,44 @@ export default function blogTemplate({ pageContext }) {
             </Typography>
           </Box>
         </Container>
-      ) : (
-        <Container maxWidth="md">
-          <Box className={styles.imgBox}>
-            <Typography className={styles.title} variant="h1" gutterBottom>
-              {blogDetails.title}
-            </Typography>
-          </Box>
-          <Box className={styles.imgBox}>
-            <img
-              className={styles.img}
-              src={blogDetails.featuredImage.file.url}
-              alt={blogDetails.featuredImage.description}
-            />
-          </Box>
-          <Box>
-            {showBlog === 0 ? (
-              <Box>
-                <Typography
-                  className={styles.truncatedText}
-                  variant="h1"
-                  gutterBottom
-                >
-                  <Truncate lines={8} ellipsis="&hellip;">
-                    {renderRichText(blogDetails.blog)}
-                  </Truncate>
-                </Typography>
-                <Button className={styles.btn} variant="contained">
-                  <Link to="/login">Sign In To Read Full Content</Link>
-                </Button>
-              </Box>
-            ) : (
-              <Typography className={styles.body} variant="body1" gutterBottom>
-                {renderRichText(blogDetails.blog)}
+      ) : ( */}
+      <Container maxWidth="md">
+        <Box className={styles.imgBox}>
+          <Typography className={styles.title} variant="h1" gutterBottom>
+            {blogDetails.title}
+          </Typography>
+        </Box>
+        <Box className={styles.imgBox}>
+          <img
+            className={styles.img}
+            src={blogDetails.featuredImage.file.url}
+            alt={blogDetails.featuredImage.description}
+          />
+        </Box>
+        <Box>
+          {shouldVisible === 0 ? (
+            <Box>
+              <Typography
+                className={styles.truncatedText}
+                variant="h1"
+                gutterBottom
+              >
+                <Truncate lines={8} ellipsis="&hellip;">
+                  {renderRichText(blogDetails.blog)}
+                </Truncate>
               </Typography>
-            )}
-          </Box>
-        </Container>
-      )}
+              <Button className={styles.btn} variant="contained">
+                <Link to="/login">Sign In To Read Full Content</Link>
+              </Button>
+            </Box>
+          ) : (
+            <Typography className={styles.body} variant="body1" gutterBottom>
+              {renderRichText(blogDetails.blog)}
+            </Typography>
+          )}
+        </Box>
+      </Container>
+      {/* )} */}
     </Layout>
   );
 }

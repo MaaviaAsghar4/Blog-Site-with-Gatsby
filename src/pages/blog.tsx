@@ -15,18 +15,23 @@ import {
   Grid,
 } from "@material-ui/core";
 import { blogShow } from "../features/authSlice";
+import { increment } from "../features/stateSlice";
 
 export default function Blog({ data }) {
   const dispatch = useAppDispatch();
   const { allContentfulGatsby } = data;
   const auth = useSelector((state: any) => state.auth);
+  const blogState = useSelector((state: any) => state.blogState);
   const handleBlogVisiblity = () => {
     let number = 0;
-    if (auth.number === 0) {
+    if (blogState.number === 0) {
       localStorage.setItem("state", number.toString());
-      dispatch(blogShow(1));
+      dispatch(blogShow(0));
+      dispatch(increment(1));
     } else {
+      dispatch(blogShow(1));
       localStorage.removeItem("state");
+      localStorage.setItem("state", (number + 1).toString());
     }
   };
   return (
